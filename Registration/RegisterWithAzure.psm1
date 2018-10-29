@@ -1580,16 +1580,15 @@ function Register-AzureStackResourceProvider{
         try
         {
             Log-Output "Registering Azure Stack resource provider."
-            [Version]$azurePSVersion = (Get-Module AzureRm.Resources).Version
-            if ($azurePSVersion -ge [Version]"4.3.2")
+            if ((Get-Command Register-AzureRmResourceProvider).Parameters.ContainsKey("Force"))
             {
-                Register-AzureRmResourceProvider -ProviderNamespace "Microsoft.AzureStack" | Out-Null
+                Register-AzureRmResourceProvider -ProviderNamespace "Microsoft.AzureStack" -Force | Out-Null
                 Log-Output "Resource provider registered."
                 break
             }
             else
             {
-                Register-AzureRmResourceProvider -ProviderNamespace "Microsoft.AzureStack" -Force | Out-Null
+                Register-AzureRmResourceProvider -ProviderNamespace "Microsoft.AzureStack" | Out-Null
                 Log-Output "Resource provider registered."
                 break
             }
